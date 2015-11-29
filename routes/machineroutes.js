@@ -48,7 +48,12 @@ module.exports = function(router) {
           console.error(err);
           res.send(err);
         }
-        res.json(machine);
+
+        if (machine) {
+          res.json(machine);
+        } else {
+          res.status(404).send('Not found');
+        }
       });
     })
 

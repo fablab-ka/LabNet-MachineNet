@@ -1,18 +1,18 @@
 var mongoose   = require('mongoose');
 var express    = require('express');
 var bodyParser = require('body-parser');
+var config = require('./config');
 var machineRoutes = require('./routes/machineroutes');
+var lockRoutes = require('./routes/lockroutes');
 
 // SETUP
 // =============================================================================
 
 console.log("MachineNet Version '" + require('./package.json').version + "'");
 
-dburl = 'mongodb://mongo/machinenet';
-
-mongoose.connect(dburl, function(err) {
+mongoose.connect(config.dbUrl, function(err) {
   if (err) {
-    console.log("Failed to initialize Database. Ensure connectivity to '" + dburl + "'");
+    console.log("Failed to initialize Database. Ensure connectivity to '" + config.dbUrl + "'");
     throw err;
   }
 });
@@ -34,6 +34,7 @@ router.get('/', function(req, res) {
 });
 
 machineRoutes(router);
+lockRoutes(router);
 
 // REGISTER ROUTES -------------------------------
 app.use('/api', router);
