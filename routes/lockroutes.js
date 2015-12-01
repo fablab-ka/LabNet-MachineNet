@@ -12,7 +12,7 @@ module.exports = function(router) {
 
   router.route('/machines/:machine_id/lock')
 
-    // get machine lock (GET http://localhost:4020/api/machine/:machine_id/lock)
+    // get machine lock (GET http://localhost:4020/api/machines/:machine_id/lock)
     .get(function(req, res) {
       console.log('get machine lock');
 
@@ -38,7 +38,7 @@ module.exports = function(router) {
 
   router.route('/machines/:machine_id/lock/:user_id')
 
-    // create a new machine lock (POST http://localhost:4020/api/machine/:machine_id/lock/:user_id)
+    // create a new machine lock (POST http://localhost:4020/api/machines/:machine_id/lock/:user_id)
     .post(function(req, res) {
       console.log('create machine lock');
 
@@ -74,7 +74,7 @@ module.exports = function(router) {
     })
 
 
-    // delete a new machine lock (DELETE http://localhost:4020/api/machine/:machine_id/lock/:user_id)
+    // delete a new machine lock (DELETE http://localhost:4020/api/machines/:machine_id/lock/:user_id)
     .delete(function(req, res) {
       console.log('resolve machine lock');
 

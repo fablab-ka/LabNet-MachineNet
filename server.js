@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var config = require('./config');
 var machineRoutes = require('./routes/machineroutes');
 var lockRoutes = require('./routes/lockroutes');
+var discoverer = require('./discoverer');
 
 // SETUP
 // =============================================================================
@@ -43,3 +44,7 @@ app.use('/api', router);
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);
+
+// START UDP Broadcast
+// =============================================================================
+discoverer.start();
