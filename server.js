@@ -1,6 +1,8 @@
 var mongoose   = require('mongoose');
 var express    = require('express');
 var bodyParser = require('body-parser');
+var docs = require("express-mongoose-docs");
+
 var config = require('./config');
 var machineRoutes = require('./routes/machineroutes');
 var lockRoutes = require('./routes/lockroutes');
@@ -22,6 +24,7 @@ var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+docs(app, mongoose);
 
 var port = process.env.PORT || 4020;
 
@@ -47,4 +50,4 @@ console.log('Magic happens on port ' + port);
 
 // START UDP Broadcast
 // =============================================================================
-discoverer.start();
+discoverer();
