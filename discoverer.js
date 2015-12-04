@@ -5,7 +5,7 @@ var config = require('./config');
 var machineNetVersion = require('./package.json').version;
 
 var udpClient = dgram.createSocket('udp4');
-udpClient.bind(1212, function() {
+udpClient.bind(2424, function() {
   udpClient.setBroadcast(true);
 });
 
