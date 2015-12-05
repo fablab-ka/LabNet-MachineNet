@@ -7,6 +7,7 @@ var config = require('./config');
 var machineRoutes = require('./routes/machineroutes');
 var lockRoutes = require('./routes/lockroutes');
 var discoverer = require('./discoverer');
+var pinger = require('./pinger');
 
 // SETUP
 // =============================================================================
@@ -51,3 +52,7 @@ console.log('Magic happens on port ' + port);
 // START UDP Broadcast
 // =============================================================================
 discoverer();
+
+// START TCP Machine Pinging
+// =============================================================================
+pinger();
