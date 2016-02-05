@@ -1,3 +1,5 @@
+var request = require('request');
+
 var Machine = require('../models/machine');
 
 module.exports = function(router) {
@@ -12,6 +14,7 @@ module.exports = function(router) {
         if (err) {
           console.error(err);
           res.send(err);
+          return;
         }
 
         res.json(machines);
@@ -30,6 +33,7 @@ module.exports = function(router) {
         if (err) {
           console.error(err);
           res.send(err);
+          return;
         }
 
         res.json({ message: 'Machine created!' });
@@ -47,6 +51,7 @@ module.exports = function(router) {
         if (err) {
           console.error(err);
           res.send(err);
+          return;
         }
 
         if (machine) {
@@ -66,6 +71,7 @@ module.exports = function(router) {
         if (err) {
           console.error(err);
           res.send(err);
+          return;
         }
 
         machine.name = req.body.name;
@@ -74,6 +80,7 @@ module.exports = function(router) {
           if (err) {
             console.error(err);
             res.send(err);
+            return;
           }
 
           res.json({ message: 'Machine updated!' });
@@ -92,10 +99,62 @@ module.exports = function(router) {
         if (err) {
           console.error(err);
           res.send(err);
+          return;
         }
 
         res.json({ message: 'Successfully deleted' });
       });
     });
+
+
+  router.route('/machines/:machine_id/:command_name')
+
+
+    // execute a device command (POST http://localhost:4020/api/machines/:machine_id/:command_name)
+    .post(function(req, res) {
+      console.log('execute device command ' + req.params.command_name + ' for ' + req.params.machine_id);
+
+      Machine.findById(req.params.machine_id, function(err, machine) {
+        if (err) {
+          console.error(err);
+          res.send(err);
+          return;
+        }
+
+        if (machine) {
+          var commandToExecute = null;
+          for (var i in machine.commands) {
+            var command = machine.commands[i];
+            if (command.name === command_name) {
+              commandToExecute = command;
+              break;
+            }
+          }
+
+          if (commandToExecute) {
+            request({
+              url: command.url,
+              method: command.method,
+              multipart: [{
+                'content-type': command.contentType,
+                body: command.data
+              }]
+            }, function(error, response, body) {
+              if (error) {
+                console.error(err);
+                res.send(err);
+                return;
+              }
+
+              res.status(200).send('OK');
+            });
+          } else {
+            res.status(404).send('Command not found');
+          }
+        } else {
+          res.status(404).send('Machine not found');
+        }
+      });
+    })
 
 };
